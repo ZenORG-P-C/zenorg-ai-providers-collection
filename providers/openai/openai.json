@@ -1,0 +1,31 @@
+{
+  "id": "openai",
+  "name": "OpenAI",
+  "description": "OpenAI's API provides access to GPT-4, GPT-3.5, and other state-of-the-art language models along with embeddings, image generation, and more.",
+  "type": ["openai-compatible", "standalone"],
+  "endpoints": {
+    "base_url": "https://api.openai.com",
+    "completions": "/v1/completions",
+    "chat": "/v1/chat/completions",
+    "embeddings": "/v1/embeddings"
+  },
+  "authentication": {
+    "type": "api_key",
+    "header": "Authorization"
+  },
+  "features": [
+    "text-generation",
+    "chat",
+    "embeddings",
+    "fine-tuning",
+    "image-generation",
+    "audio-transcription",
+    "audio-generation"
+  ],
+  "pricing": {
+    "free_tier": false,
+    "details_url": "https://openai.com/pricing"
+  },
+  "documentation_url": "https://platform.openai.com/docs",
+  "status": "active"
+}

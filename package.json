@@ -1,0 +1,33 @@
+{
+  "name": "zenorg-ai-providers-collection",
+  "version": "1.0.0",
+  "description": "A comprehensive collection of AI providers with API access",
+  "main": "api/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenorg/zenorg-ai-providers-collection.git"
+  },
+  "keywords": [
+    "ai",
+    "providers",
+    "openai",
+    "api"
+  ],
+  "author": "zenorg",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.3"
+  }
+}
