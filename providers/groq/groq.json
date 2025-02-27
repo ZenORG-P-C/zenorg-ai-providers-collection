@@ -1,0 +1,26 @@
+{
+  "id": "groq",
+  "name": "Groq",
+  "description": "Fast LLM inference with OpenAI-compatible API. Simple to integrate and easy to scale.",
+  "type": ["openai-compatible", "standalone"],
+  "endpoints": {
+    "base_url": "https://api.groq.com",
+    "completions": "/v1/completions",
+    "chat": "/v1/chat/completions",
+    "embeddings": "/v1/embeddings"
+  },
+  "authentication": {
+    "type": "api_key",
+    "header": "Authorization"
+  },
+  "features": [
+    "text-generation",
+    "chat"
+  ],
+  "pricing": {
+    "free_tier": false,
+    "details_url": "https://console.groq.com/pricing"
+  },
+  "documentation_url": "https://console.groq.com/docs",
+  "status": "active"
+}

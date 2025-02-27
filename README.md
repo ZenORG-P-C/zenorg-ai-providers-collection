@@ -47,19 +47,72 @@ Each provider is documented in a JSON file with the following structure:
 }
 ```
 
-## API Usage
+## API Endpoints
 
-The repository includes a simple API server that provides access to the provider data:
+### Provider Management
 
 ```bash
 # Get all providers
-curl http://localhost:3000/api/providers
+GET /api/providers
 
-# Get OpenAI-compatible providers
-curl http://localhost:3000/api/providers?type=openai-compatible
+# Get providers with filters
+GET /api/providers?type=openai-compatible
+GET /api/providers?features=embeddings
 
-# Get providers with specific features
-curl http://localhost:3000/api/providers?features=embeddings
+# Get specific provider by ID
+GET /api/providers/:id
+
+# Add new provider
+POST /api/providers
+Content-Type: application/json
+
+{
+  "id": "provider-id",
+  "name": "Provider Name",
+  ...
+}
+```
+
+### Provider Scraping
+
+```bash
+# Scrape provider from documentation
+POST /api/scrape
+Content-Type: application/json
+
+{
+  "mainUrl": "https://docs.provider.com",
+  "additionalUrls": {
+    "api": "https://docs.provider.com/api",
+    "authentication": "https://docs.provider.com/auth",
+    "pricing": "https://docs.provider.com/pricing"
+  }
+}
+
+# Response includes confidence levels for extracted data
+{
+  "message": "Scraping completed successfully",
+  "provider": {
+    "id": "provider-id",
+    "name": "Provider Name",
+    ...
+  },
+  "confidence": {
+    "name": true,
+    "description": true,
+    "endpoints": true,
+    ...
+  }
+}
+```
+
+### Health Check
+
+```bash
+# Check API health
+GET /api/health
+
+Response: { "status": "ok" }
 ```
 
 ## Contributing
@@ -77,6 +130,9 @@ npm install
 
 # Start the API server
 npm start
+
+# Run in development mode with auto-reload
+npm run dev
 
 # Run tests
 npm test

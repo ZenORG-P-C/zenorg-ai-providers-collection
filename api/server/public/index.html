@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Provider Scraper</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #result {
+            white-space: pre-wrap;
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .confidence {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        .confidence.high {
+            background: #d4edda;
+            color: #155724;
+        }
+        .confidence.low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Provider Scraper</h1>
+    
+    <div class="container">
+        <form id="scrapeForm">
+            <div class="form-group">
+                <label for="mainUrl">Main Documentation URL:</label>
+                <input type="url" id="mainUrl" required 
+                       placeholder="https://console.groq.com/docs/overview">
+            </div>
+            
+            <div class="form-group">
+                <label for="apiUrl">API Documentation URL (optional):</label>
+                <input type="url" id="apiUrl" 
+                       placeholder="https://console.groq.com/docs/api">
+            </div>
+            
+            <div class="form-group">
+                <label for="authUrl">Authentication Documentation URL (optional):</label>
+                <input type="url" id="authUrl" 
+                       placeholder="https://console.groq.com/docs/authentication">
+            </div>
+            
+            <div class="form-group">
+                <label for="pricingUrl">Pricing Documentation URL (optional):</label>
+                <input type="url" id="pricingUrl" 
+                       placeholder="https://console.groq.com/docs/pricing">
+            </div>
+            
+            <button type="submit">Scrape Provider</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Result:</h2>
+        <pre id="result">No results yet</pre>
+    </div>
+
+    <script>
+        document.getElementById('scrapeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const mainUrl = document.getElementById('mainUrl').value;
+            const apiUrl = document.getElementById('apiUrl').value;
+            const authUrl = document.getElementById('authUrl').value;
+            const pricingUrl = document.getElementById('pricingUrl').value;
+            
+            const data = {
+                mainUrl,
+                additionalUrls: {
+                    api: apiUrl || undefined,
+                    authentication: authUrl || undefined,
+                    pricing: pricingUrl || undefined
+                }
+            };
+            
+            try {
+                const response = await fetch('/api/scrape', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // Format the result with confidence indicators
+                const formatted = {
+                    provider: result.provider,
+                    confidence: Object.entries(result.confidence)
+                        .map(([key, value]) => `${key}: ${value ? '✓' : '⚠'}`)
+                        .join('\n')
+                };
+                
+                document.getElementById('result').textContent = 
+                    JSON.stringify(formatted, null, 2);
+            } catch (error) {
+                document.getElementById('result').textContent = 
+                    `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
